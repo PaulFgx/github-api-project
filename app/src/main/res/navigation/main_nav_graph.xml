@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/user_list_fragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/user_list_fragment"
+        android:name="fr.appsolute.template.ui.fragment.UserListFragment"
+        android:label="fragment_character_list"
+        tools:layout="@layout/fragment_user_list">
+    </fragment>
+</navigation>
