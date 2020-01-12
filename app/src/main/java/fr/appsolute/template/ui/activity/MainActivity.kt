@@ -1,7 +1,8 @@
-package fr.appsolute.template
+package fr.appsolute.template.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import fr.appsolute.template.R
 
 class MainActivity : AppCompatActivity() {
 
