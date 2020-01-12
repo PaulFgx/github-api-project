@@ -44,9 +44,9 @@ ext {
     //region JetPack
     core_version = '1.2.0-rc01'
     lifecycle_version = '2.2.0-rc03'
-    navigation_version = '2.2.0-rc03'
-    room_version = '2.2.2'
-    paging_version = '2.1.0'
+    navigation_version = '2.2.0-rc04'
+    room_version = '2.2.3'
+    paging_version = '2.1.1'
     // endregion
 
     // region Networking
@@ -56,7 +56,7 @@ ext {
     // endregion
 
     // region Google
-    material_component_version = '1.2.0-alpha02'
+    material_component_version = '1.2.0-alpha03'
     // endregion
 
     // region Testing
