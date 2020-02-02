@@ -1,5 +1,6 @@
 package fr.appsolute.template.ui.fragment
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -59,6 +60,7 @@ class UserDetailsFragment : Fragment() {
             userViewModel.getUserWithUrl(userUrl) {
                 (activity as? MainActivity)?.supportActionBar?.apply {
                     this.setTitle(R.string.details)
+
                     this.setDisplayHomeAsUpEnabled(true)
                 }
                 view.apply {
