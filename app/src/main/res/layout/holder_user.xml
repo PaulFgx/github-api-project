@@ -1,45 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/holder_user_root"
+    android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    card_view:cardElevation="5dp"
+    card_view:cardCornerRadius="8dp"
     tools:context="fr.appsolute.template.ui.widget.holder.UserViewHolder"
-    tools:layout_height="96dp"
     tools:showIn="@layout/fragment_user_list">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/holder_user_avatar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/holder_user_login"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/holder_user_root"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toTopOf="@id/holder_user_type"
-        app:layout_constraintStart_toEndOf="@id/holder_user_avatar"
-        app:layout_constraintTop_toTopOf="@id/holder_user_avatar"
-        tools:text="@tools:sample/full_names" />
+        android:layout_margin="16dp"
+        tools:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/holder_user_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/holder_user_avatar"
-        app:layout_constraintStart_toStartOf="@id/holder_user_login"
-        app:layout_constraintTop_toBottomOf="@id/holder_user_login"
-        tools:text="@tools:sample/cities" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/holder_user_circular_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="23dp"
+            app:strokeColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/holder_user_avatar"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                tools:src="@tools:sample/avatars" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/holder_user_login"
+            style="@style/TextAppearance.MyTheme.Headline6"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toEndOf="@id/holder_user_circular_card"
+            app:layout_constraintTop_toTopOf="@id/holder_user_circular_card"
+            app:layout_constraintEnd_toStartOf="@id/holder_chevron"
+            tools:text="@tools:sample/full_names" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/holder_user_type"
+            style="@style/TextAppearance.MyTheme.Subtitle1"
+            android:layout_width="0dp"
+            android:layout_height="19dp"
+            app:layout_constraintStart_toStartOf="@id/holder_user_login"
+            app:layout_constraintTop_toBottomOf="@id/holder_user_login"
+            app:layout_constraintEnd_toEndOf="@id/holder_user_login"
+            tools:text="@tools:sample/cities" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_site_admin"
+            style="@style/TextAppearance.MyTheme.Subtitle2"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/site_admin"
+            app:layout_constraintStart_toStartOf="@id/holder_user_type"
+            app:layout_constraintTop_toBottomOf="@id/holder_user_type"
+            tools:text="@string/site_admin" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/holder_user_site_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginStart="5dp"
+            android:text=""
+            android:enabled="false"
+            app:layout_constraintBaseline_toBaselineOf="@id/label_site_admin"
+            app:layout_constraintStart_toEndOf="@id/label_site_admin"
+            tools:checked="true"
+            tools:text=""/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/holder_chevron"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_chevron_right"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:src="@drawable/ic_chevron_right" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

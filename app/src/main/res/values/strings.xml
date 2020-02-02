@@ -4,6 +4,7 @@
     <string name="nb_followers">Nombre de followers :</string>
     <string name="nb_followings">Nombre d\'utilisateurs suivis :</string>
     <string name="repos">Repositories</string>
+    <string name="site_admin">Administrateur ?</string>
     <string name="profils">Profils</string>
     <string name="details">Détails</string>
 </resources>
