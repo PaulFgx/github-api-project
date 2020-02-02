@@ -12,4 +12,10 @@
     <color name="color_on_background">#ffffff</color>
     <color name="color_on_surface">#ffffff</color>
     <color name="color_on_error">#ffffff</color>
+    <color name="color_headline5">#ff000000</color>
+    <color name="color_headline6">#ff000000</color>
+    <color name="color_subtitle1">#bf000000</color>
+    <color name="color_subtitle2">#80000000</color>
+    <color name="color_body1">#bf000000</color>
+    <color name="color_body2">#80000000</color>
 </resources>

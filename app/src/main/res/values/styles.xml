@@ -18,7 +18,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--Components-->
+    <style name="footerLayoutStyle">
+        <item name="android:background">?colorPrimary</item>
+    </style>
 
+    <!--BottomNavigationView-->
+    <style name="ThemeOverlay.MyTheme.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:backgroundTint">?colorSecondary</item>
+        <item name="itemIconTint">?colorOnSecondary</item>
+        <item name="itemTextColor">?colorOnSecondary</item>
+    </style>
     <!--Bottom Sheets-->
     <style name="ThemeOverlay.MyTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowIsFloating">false</item>
@@ -32,7 +41,6 @@
     <style name="Widget.MyTheme.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="shapeAppearanceOverlay">?shapeAppearanceLargeComponent</item>
     </style>
-
     <!--Navigation Drawer-->
     <style name="Widget.MyTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextAppearance">?textAppearanceBody2</item>
