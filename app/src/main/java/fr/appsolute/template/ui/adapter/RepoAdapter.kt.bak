@@ -49,7 +49,6 @@ class RepoAdapter : RecyclerView.Adapter<RepoViewHolder>() {
                     dp(4)
                 )
             }
-
         }
     }
 }

@@ -23,7 +23,6 @@ class UserViewHolder private constructor(itemView: View) : RecyclerView.ViewHold
             this.setOnClickListener { onClick(it, model) }
             this.holder_user_login.text = model.login
             this.holder_user_type.text = model.type
-            this.holder_user_site_admin.isChecked = model.site_admin
             Glide.with(this)
                 .load(model.avatar_url)
                 .into(this.holder_user_avatar)
