@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import fr.appsolute.template.R
 import fr.appsolute.template.data.model.User
@@ -51,7 +52,12 @@ class UserListFragment : Fragment(),
             if (itemDecorationCount == 0) addItemDecoration(UserAdapter.OffsetDecoration())
         }
 
-        userViewModel.getAllUsers {
+        // To load only the first page of user
+        /*userViewModel.getAllUsers {
+            userAdapter.submitList(it)
+        }*/
+
+        userViewModel.usersPagedList.observe(this) {
             userAdapter.submitList(it)
         }
     }

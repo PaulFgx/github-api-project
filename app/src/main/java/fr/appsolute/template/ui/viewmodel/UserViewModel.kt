@@ -17,6 +17,11 @@ open class UserViewModel(
         get() = _data
 
     /**
+     *  Return the paginated list of character from the API
+     */
+    val usersPagedList = repository.getPaginatedList(viewModelScope)
+
+    /**
      * Call the api to fetch the details of a character from its ID
      */
     fun getUserWithUrl(url: String, onSuccess: OnSuccess<User>) {
