@@ -4,14 +4,21 @@ import fr.appsolute.template.data.model.User
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 
 interface UserApi {
 
-    @GET(GET_ALL_USER_PATH_PAGINATED)
+    // https://api.github.com/users?since=0
+    /*@GET(GET_ALL_USER_PATH_PAGINATED)
     suspend fun getAllUsersPaginated(
         @Path("id") id: Int
+    ): Response<List<User>>*/
+
+    @GET(GET_ALL_USER_PATH)
+    suspend fun getAllUser(
+        @Query("since") id: Int
     ): Response<List<User>>
 
     @GET(GET_ALL_USER_PATH)

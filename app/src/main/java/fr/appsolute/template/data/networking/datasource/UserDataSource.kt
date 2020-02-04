@@ -20,7 +20,7 @@ class UserDataSource private constructor(
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.getAllUsersPaginated(FIRST_KEY).run {
+                val response = api.getAllUser(FIRST_KEY).run {
 
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
@@ -29,7 +29,7 @@ class UserDataSource private constructor(
                 if (params.placeholdersEnabled) callback.onResult(
                     response,
                     0,
-                    response.size,
+                    response.size, // Don't know the total size
                     null,
                     if (response.isNotEmpty()) response.last().id else null
                 ) else callback.onResult(
@@ -47,7 +47,7 @@ class UserDataSource private constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.getAllUsersPaginated(id = params.key).run {
+                val response = api.getAllUser(id = params.key).run {
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
                     else throw IllegalStateException("Response is not successful : code = ${this.code()}")
@@ -77,7 +77,7 @@ class UserDataSource private constructor(
 
     companion object {
         private const val TAG: String = "UserDataSource"
-        private var FIRST_KEY = 0
+        private const val FIRST_KEY = 0
     }
 
 }
