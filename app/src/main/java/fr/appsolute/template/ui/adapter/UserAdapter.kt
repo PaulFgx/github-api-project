@@ -12,6 +12,7 @@ import fr.appsolute.template.ui.utils.dp
 import fr.appsolute.template.ui.widget.holder.OnUserClickListener
 import fr.appsolute.template.ui.widget.holder.UserViewHolder
 
+// Adapter that shows the paginated list
 class UserAdapter(
     private val onUserClickListener: OnUserClickListener
 ) : PagedListAdapter<User, UserViewHolder>(Companion) {
@@ -34,9 +35,6 @@ class UserAdapter(
         }
     }
 
-    /**
-     * Define how decorate an item
-     */
     class OffsetDecoration : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(
             outRect: Rect,
@@ -58,7 +56,7 @@ class UserAdapter(
     }
 }
 
-
+// Adapter to show only the first page
 class UserAdapterSinglePage(
     private val onUserClickListener: OnUserClickListener
 ) : ListAdapter<User, UserViewHolder>(Companion) {
@@ -81,9 +79,6 @@ class UserAdapterSinglePage(
         }
     }
 
-    /**
-     * Define how decorate an item
-     */
     class OffsetDecoration : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(
             outRect: Rect,
@@ -100,7 +95,6 @@ class UserAdapterSinglePage(
                     dp(4)
                 )
             }
-
         }
     }
 }

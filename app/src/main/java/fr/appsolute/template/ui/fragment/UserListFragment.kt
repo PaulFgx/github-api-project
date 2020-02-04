@@ -52,11 +52,6 @@ class UserListFragment : Fragment(),
             if (itemDecorationCount == 0) addItemDecoration(UserAdapter.OffsetDecoration())
         }
 
-        // To load only the first page of user
-        /*userViewModel.getAllUsers {
-            userAdapter.submitList(it)
-        }*/
-
         userViewModel.usersPagedList.observe(this) {
             userAdapter.submitList(it)
         }
