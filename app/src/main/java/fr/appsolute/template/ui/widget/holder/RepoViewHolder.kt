@@ -18,8 +18,10 @@ class RepoViewHolder private constructor(itemView: View) : RecyclerView.ViewHold
             repo.language?.run { if (repo.language.isNotEmpty()) holder_repo_language.text = repo.language}
             val parser =  SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
             val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.FRANCE)
-            val formattedDate = formatter.format(parser.parse(repo.created_at))
-            this.holder_repo_created_at.text = formattedDate
+            repo.created_at?.run {
+                val formattedDate = formatter.format(parser.parse(repo.created_at))
+                holder_repo_created_at.text = formattedDate
+            }
         }
     }
 

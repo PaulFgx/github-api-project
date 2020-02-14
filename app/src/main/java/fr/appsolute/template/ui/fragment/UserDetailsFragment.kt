@@ -65,14 +65,14 @@ class UserDetailsFragment : Fragment() {
                 }
                 view.apply {
                     this.user_details_name.text = it.name
-                    it.location?.run { user_details_location.text = it.location!! }
-                    it.public_repos?.run { user_details_nb_repos.text = it.public_repos!!.toString() }
-                    it.followers?.run { user_details_nb_followers.text = it.followers!!.toString() }
-                    it.following?.run { user_details_nb_followings.text = it.following!!.toString() }
+                    it.location?.run { user_details_location.text = it.location }
+                    it.public_repos?.run { user_details_nb_repos.text = it.public_repos.toString() }
+                    it.followers?.run { user_details_nb_followers.text = it.followers.toString() }
+                    it.following?.run { user_details_nb_followings.text = it.following.toString() }
                     Glide.with(this)
                         .load(it.avatar_url)
                         .into(this.user_details_image_view)
-                    it.repos_url?.run { loadRepos(it.repos_url!!) }
+                    it.repos_url.run { loadRepos(it.repos_url) }
                 }
             }
         }
