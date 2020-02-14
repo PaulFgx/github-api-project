@@ -9,6 +9,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * DataSource use for the paginated api ([UserApi.getAllUser])
+ */
 class UserDataSource private constructor(
     private val api: UserApi,
     private val scope: CoroutineScope
@@ -77,7 +80,7 @@ class UserDataSource private constructor(
 
     companion object {
         private const val TAG: String = "UserDataSource"
-        private const val FIRST_KEY = 46
+        private const val FIRST_KEY = 0
     }
 
 }

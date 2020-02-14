@@ -26,5 +26,4 @@ interface UserApi {
     companion object {
         const val GET_ALL_USER_PATH = "users"
     }
-
 }

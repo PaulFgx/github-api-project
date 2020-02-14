@@ -2,6 +2,7 @@ package fr.appsolute.template.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import fr.appsolute.template.data.model.User
+import fr.appsolute.template.test.getBlockingValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
@@ -77,5 +78,16 @@ class UserRepositoryTest {
 
         // test that exclude some fields to avoid unit test crash when remote informations are updated
         assertTrue(ReflectionEquals(defunkt, "public_repos", "public_gists", "followers", "following", "updated_at").matches(data))
+    }
+
+    @Test
+    fun getPaginatedListTest() = runBlocking {
+        val value = repository.getPaginatedList(this).getBlockingValue(
+            timeOut = 10
+        )
+        assertTrue(
+            "Size should be 0 or 30",
+            value?.count()?.equals(0) ?: false || value?.count()?.equals(30) ?: false
+        )
     }
 }

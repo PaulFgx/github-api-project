@@ -110,6 +110,28 @@ class UserApiTest {
     }
 
     @Test
+    fun getAllUser() = runBlocking {
+
+        val firstUser = mojombo
+        val count = 30
+
+        api.getAllUser(0).apply {
+            assertTrue("Request must be a success", this.isSuccessful)
+            val data: List<User> =
+                this.body() ?: throw IllegalStateException("Body is null")
+            assertEquals(
+                "Same count", count, data.size
+            )
+            assertEquals(
+                "Fisrt User must be mojombo", firstUser, data.first()
+            )
+            println("${this.body()?.size}")
+        }
+        
+        return@runBlocking
+    }
+
+    @Test
     fun getUserDetails() = runBlocking {
         api.getUserDetails("https://api.github.com/users/defunkt").run {
             assertTrue("Request must be a success", this.isSuccessful)
