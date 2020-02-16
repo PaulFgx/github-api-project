@@ -1,9 +1,13 @@
 package fr.appsolute.template.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-data class User(
+@Entity(tableName = "user")
+data class User @JvmOverloads constructor(
     @SerializedName("login") val login: String,
+    @PrimaryKey(autoGenerate = false)
     @SerializedName("id") val id: Int,
     @SerializedName("node_id") val node_id: String,
     @SerializedName("avatar_url") val avatar_url: String,
