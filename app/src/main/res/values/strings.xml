@@ -7,4 +7,7 @@
     <string name="site_admin">Administrateur ?</string>
     <string name="profils">Profils</string>
     <string name="details">Détails</string>
+    <string name="save_user">Voulez-vous enregistrer l\'utilisateur ?</string>
+    <string name="oui">Oui</string>
+    <string name="non">Non</string>
 </resources>

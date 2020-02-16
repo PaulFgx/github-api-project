@@ -1,9 +1,11 @@
 package fr.appsolute.template.ui.fragment
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +17,7 @@ import fr.appsolute.template.data.model.User
 import fr.appsolute.template.ui.activity.MainActivity
 import fr.appsolute.template.ui.adapter.UserAdapter
 import fr.appsolute.template.ui.viewmodel.UserViewModel
+import fr.appsolute.template.ui.widget.holder.ClickType
 import fr.appsolute.template.ui.widget.holder.OnUserClickListener
 import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
@@ -58,12 +61,37 @@ class UserListFragment : Fragment(),
     }
 
     // Implementation of OnUserClickListener
-    override fun invoke(view: View, user: User) {
+    override fun invoke(view: View, user: User, type: ClickType) {
+        when (type) {
+            ClickType.NORMAL -> goGoDetailFragment(user)
+            ClickType.LONG -> askForPersistence(user)
+            else -> throw IllegalStateException("This should not have happened")
+        }
+    }
+
+    private fun goGoDetailFragment(user: User) {
         findNavController().navigate(
             R.id.action_user_list_fragment_to_user_details_fragment,
             bundleOf(
                 UserDetailsFragment.ARG_USER_URL_KEY to user.url
             )
         )
+    }
+
+    private fun askForPersistence(user: User) {
+        val builder = AlertDialog.Builder(this.context)
+        builder.setMessage(R.string.save_user)
+        builder.setPositiveButton(R.string.oui) { dialog, which ->
+            Toast.makeText(this.context, "Oui", Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton(R.string.non) { dialog, which ->
+            Toast.makeText(this.context, "Non", Toast.LENGTH_SHORT).show()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    private fun persistInDatabase(user: User) {
+
     }
 }
