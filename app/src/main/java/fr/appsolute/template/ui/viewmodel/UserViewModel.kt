@@ -30,9 +30,9 @@ open class UserViewModel(
         }
     }
 
-    fun getAllUsers(onSuccess: OnSuccess<List<User>>) {
+    fun insertUser(user: User, onSuccess: OnSuccess<Boolean>) {
         viewModelScope.launch {
-            repository.getAllUsers()?.run(onSuccess)
+            repository.insertUser(user).run(onSuccess)
         }
     }
 

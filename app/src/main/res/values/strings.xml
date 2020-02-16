@@ -10,4 +10,6 @@
     <string name="save_user">Voulez-vous enregistrer l\'utilisateur ?</string>
     <string name="oui">Oui</string>
     <string name="non">Non</string>
+    <string name="insert_ok">Insertion ok</string>
+    <string name="insert_failed">L\'insertion a échouée</string>
 </resources>

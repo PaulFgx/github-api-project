@@ -82,16 +82,22 @@ class UserListFragment : Fragment(),
         val builder = AlertDialog.Builder(this.context)
         builder.setMessage(R.string.save_user)
         builder.setPositiveButton(R.string.oui) { dialog, which ->
-            Toast.makeText(this.context, "Oui", Toast.LENGTH_SHORT).show()
+            persistInDatabase(user)
         }
         builder.setNegativeButton(R.string.non) { dialog, which ->
-            Toast.makeText(this.context, "Non", Toast.LENGTH_SHORT).show()
+            //
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
 
     private fun persistInDatabase(user: User) {
-
+        userViewModel.insertUser(user) { res ->
+            if (res) {
+                Toast.makeText(this.context, R.string.insert_ok, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this.context, R.string.insert_failed, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

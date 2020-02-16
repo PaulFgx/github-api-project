@@ -3,6 +3,8 @@ package fr.appsolute.template.data.repository
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import fr.appsolute.template.data.database.DatabaseManager
+import fr.appsolute.template.data.database.dao.UserDao
 import fr.appsolute.template.data.model.User
 import fr.appsolute.template.data.networking.HttpClientManager
 import fr.appsolute.template.data.networking.api.UserApi
@@ -13,7 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private class UserRepositoryImpl(
-    private val api: UserApi
+    private val api: UserApi,
+    private val dao: UserDao
 ) : UserRepository {
 
     private val paginationConfig = PagedList.Config
@@ -56,6 +59,18 @@ private class UserRepositoryImpl(
             }
         }
     }
+
+    override suspend fun insertUser(user: User): Boolean {
+        return withContext(Dispatchers.IO) {
+            try {
+                dao.insert(user)
+                return@withContext true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext false
+            }
+        }
+    }
 }
 
 interface UserRepository {
@@ -69,11 +84,15 @@ interface UserRepository {
 
     suspend fun getUserDetails(url: String): User?
 
+    suspend fun insertUser(user: User): Boolean
+
     companion object {
 
         val instance: UserRepository by lazy {
-
-            UserRepositoryImpl(HttpClientManager.instance.createApi())
+            UserRepositoryImpl(
+                HttpClientManager.instance.createApi(),
+                DatabaseManager.getInstance().database.userDao
+            )
         }
     }
 }
