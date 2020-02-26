@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.appsolute.template.R
 import fr.appsolute.template.data.model.User
 import fr.appsolute.template.ui.activity.MainActivity
