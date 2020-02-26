@@ -79,16 +79,15 @@ class UserListFragment : Fragment(),
     }
 
     private fun askForPersistence(user: User) {
-        val builder = AlertDialog.Builder(this.context)
-        builder.setMessage(R.string.save_user)
-        builder.setPositiveButton(R.string.oui) { dialog, which ->
+        val alert = AlertDialog.Builder(this.context)
+        alert.setMessage(R.string.save_user)
+        alert.setPositiveButton(R.string.oui) { dialog, which ->
             persistInDatabase(user)
         }
-        builder.setNegativeButton(R.string.non) { dialog, which ->
+        alert.setNegativeButton(R.string.non) { dialog, which ->
             //
         }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+        alert.show()
     }
 
     private fun persistInDatabase(user: User) {

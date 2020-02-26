@@ -1,19 +1,21 @@
 package fr.appsolute.template.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.room.Room
+import androidx.test.platform.app.InstrumentationRegistry
+import fr.appsolute.template.data.database.DatabaseManager
+import fr.appsolute.template.data.database.GitHubDatabase
 import fr.appsolute.template.data.model.User
 import fr.appsolute.template.test.getBlockingValue
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.newSingleThreadContext
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.*
-
-import org.junit.Assert.*
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals
 
-class UserRepositoryTest {
+@ObsoleteCoroutinesApi
+@ExperimentalCoroutinesApi
+class UseRepositoryTest {
 
     @get:Rule
     val instantTaskExecutor = InstantTaskExecutorRule()
@@ -62,14 +64,8 @@ class UserRepositoryTest {
 
     @After
     fun tearDown() {
+        databaseManager.database.clearAllTables()
         Dispatchers.resetMain()
-        testDispatcher.close()
-    }
-
-    @Test
-    fun getAllUsers() = runBlocking {
-        val value = repository.getAllUsers()
-        assertTrue("Size should be 0 or 30", value?.count()?.equals(0) ?: false || value?.count()?.equals(30) ?: false)
     }
 
     @Test
@@ -77,7 +73,7 @@ class UserRepositoryTest {
         val data = repository.getUserDetails("https://api.github.com/users/defunkt")
 
         // test that exclude some fields to avoid unit test crash when remote informations are updated
-        assertTrue(ReflectionEquals(defunkt, "public_repos", "public_gists", "followers", "following", "updated_at").matches(data))
+        Assert.assertTrue(ReflectionEquals(defunkt, "public_repos", "public_gists", "followers", "following", "updated_at").matches(data))
     }
 
     @Test
@@ -85,9 +81,27 @@ class UserRepositoryTest {
         val value = repository.getPaginatedList(this).getBlockingValue(
             timeOut = 10
         )
-        assertTrue(
+        Assert.assertTrue(
             "Size should be 0 or 30",
             value?.count()?.equals(0) ?: false || value?.count()?.equals(30) ?: false
         )
+    }
+
+    companion object {
+
+        private lateinit var databaseManager: DatabaseManager
+
+        @BeforeClass
+        @JvmStatic
+        fun setUpClass() {
+            DatabaseManager.override = object : DatabaseManager {
+                override val database: GitHubDatabase = Room.inMemoryDatabaseBuilder(
+                    InstrumentationRegistry.getInstrumentation().targetContext,
+                    GitHubDatabase::class.java
+                ).build()
+            }.also {
+                databaseManager = it
+            }
+        }
     }
 }

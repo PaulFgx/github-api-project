@@ -34,19 +34,6 @@ private class UserRepositoryImpl(
         ).build()
     }
 
-    override suspend fun getAllUsers(): List<User>? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = api.loadListUsers()
-                check(response.isSuccessful) { "Response is not a success : code = ${response.code()}" }
-                response.body() ?: throw IllegalStateException("Body is null")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
-        }
-    }
-
     override suspend fun getUserDetails(url: String): User? {
         return withContext(Dispatchers.IO) {
             try {
@@ -79,8 +66,6 @@ interface UserRepository {
      * Return a LiveData (Observable Design Pattern) of a Paged List of Character
      */
     fun getPaginatedList(scope: CoroutineScope): LiveData<PagedList<User>>
-
-    suspend fun getAllUsers(): List<User>?
 
     suspend fun getUserDetails(url: String): User?
 
