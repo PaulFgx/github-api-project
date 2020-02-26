@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.appsolute.template.R
 import fr.appsolute.template.data.model.User
 import fr.appsolute.template.ui.activity.MainActivity
@@ -20,6 +21,7 @@ import fr.appsolute.template.ui.viewmodel.UserViewModel
 import fr.appsolute.template.ui.widget.holder.ClickType
 import fr.appsolute.template.ui.widget.holder.OnUserClickListener
 import kotlinx.android.synthetic.main.fragment_user_list.view.*
+
 
 class UserListFragment : Fragment(),
     OnUserClickListener {
@@ -79,14 +81,15 @@ class UserListFragment : Fragment(),
     }
 
     private fun askForPersistence(user: User) {
-        val alert = AlertDialog.Builder(this.context)
-        alert.setMessage(R.string.save_user)
-        alert.setPositiveButton(R.string.oui) { dialog, which ->
+        val builder = AlertDialog.Builder(this.context)
+        builder.setMessage(R.string.save_user)
+        builder.setPositiveButton(R.string.oui) { dialog, which ->
             persistInDatabase(user)
         }
-        alert.setNegativeButton(R.string.non) { dialog, which ->
+        builder.setNegativeButton(R.string.non) { dialog, which ->
             //
         }
+        var alert = builder.create()
         alert.show()
     }
 
