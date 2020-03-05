@@ -8,7 +8,7 @@
     android:layout_height="wrap_content"
     card_view:cardElevation="5dp"
     card_view:cardCornerRadius="8dp"
-    tools:context="fr.appsolute.template.ui.widget.holder.UserViewHolder"
+    tools:context="fr.paulfgx.githubproject.ui.widget.holder.UserViewHolder"
     tools:showIn="@layout/fragment_user_list">
 
     <androidx.constraintlayout.widget.ConstraintLayout
