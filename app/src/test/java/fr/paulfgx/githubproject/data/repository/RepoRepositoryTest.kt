@@ -19,6 +19,7 @@ class RepoRepositoryTest {
 
     @get:Rule
     val instantTaskExecutor = InstantTaskExecutorRule()
+    @kotlinx.coroutines.ObsoleteCoroutinesApi
     private val testDispatcher = newSingleThreadContext("UI context")
     private lateinit var repository: RepoRepository
 
@@ -118,12 +119,16 @@ class RepoRepositoryTest {
         default_branch = "gh-pages"
     )
 
+    @kotlinx.coroutines.ExperimentalCoroutinesApi
+    @kotlinx.coroutines.ObsoleteCoroutinesApi
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         repository = RepoRepository.instance
     }
 
+    @kotlinx.coroutines.ExperimentalCoroutinesApi
+    @kotlinx.coroutines.ObsoleteCoroutinesApi
     @After
     fun tearDown() {
         Dispatchers.resetMain()
