@@ -1,6 +1,7 @@
 package fr.paulfgx.githubproject
 
 import android.app.Application
+import com.google.firebase.analytics.FirebaseAnalytics
 import fr.paulfgx.githubproject.data.database.DatabaseManager
 
 /**
@@ -8,9 +9,12 @@ import fr.paulfgx.githubproject.data.database.DatabaseManager
  */
 class GitHubApiApplication : Application() {
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     override fun onCreate() {
         super.onCreate()
         initDatabase()
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
     }
 
     // Init the database access
