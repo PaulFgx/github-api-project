@@ -57,7 +57,7 @@ class UserDetailsFragment : Fragment() {
         // when first items are loaded
         user_details_root.viewTreeObserver.addOnGlobalLayoutListener {
             repo_list_recycler_view?.adapter?.itemCount?.run {
-                if (this!! > 0) {
+                if (this > 0) {
                     user_detail_progress_bar.hide()
                 }
             }

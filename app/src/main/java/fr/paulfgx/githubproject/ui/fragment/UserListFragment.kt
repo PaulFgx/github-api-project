@@ -1,11 +1,12 @@
 package fr.paulfgx.githubproject.ui.fragment
 
 import android.app.AlertDialog
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,8 +31,11 @@ class UserListFragment : Fragment(),
     private lateinit var userViewModel: UserViewModel
     private lateinit var userAdapter: UserAdapter
 
+    private lateinit var searchView: SearchView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         activity?.run {
             userViewModel = ViewModelProvider(this, UserViewModel).get()
         } ?: throw IllegalStateException("Invalid Activity")
@@ -43,6 +47,39 @@ class UserListFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_user_list, container, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+
+        inflater.inflate(R.menu.search_menu, menu)
+
+        val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        val searchItem = menu.findItem(R.id.search_item)
+        val searchView = searchItem.actionView as SearchView
+        this.searchView = searchView
+
+        searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+
+                // TODO
+
+                return true
+            }
+            override fun onQueryTextSubmit(query: String): Boolean {
+
+                // TODO
+
+                return true
+            }
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return super.onOptionsItemSelected(item)
+
+        // TODO
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +103,7 @@ class UserListFragment : Fragment(),
         // when first items are loaded
         user_list_main_layout.viewTreeObserver.addOnGlobalLayoutListener {
             user_list_recycler_view?.adapter?.itemCount?.run {
-                if (this!! > 0) {
+                if (this > 0) {
                     user_list_progress_bar.hide()
                 }
             }
