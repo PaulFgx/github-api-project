@@ -16,9 +16,11 @@ import fr.paulfgx.githubproject.R
 import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.ui.activity.MainActivity
 import fr.paulfgx.githubproject.ui.adapter.UserAdapter
+import fr.paulfgx.githubproject.ui.utils.hide
 import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
 import fr.paulfgx.githubproject.ui.widget.holder.ClickType
 import fr.paulfgx.githubproject.ui.widget.holder.OnUserClickListener
+import kotlinx.android.synthetic.main.fragment_user_list.*
 import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
 
@@ -58,6 +60,16 @@ class UserListFragment : Fragment(),
 
         userViewModel.usersPagedList.observe(this) {
             userAdapter.submitList(it)
+        }
+
+        // Observe the change on the root layout and hide progress bar
+        // when first items are loaded
+        user_list_main_layout.viewTreeObserver.addOnGlobalLayoutListener {
+            user_list_recycler_view?.adapter?.itemCount?.run {
+                if (this!! > 0) {
+                    user_list_progress_bar.hide()
+                }
+            }
         }
     }
 
@@ -100,5 +112,9 @@ class UserListFragment : Fragment(),
                 Toast.makeText(this.context, R.string.insert_failed, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun hideLoader() {
+        user_list_progress_bar.visibility = View.GONE
     }
 }

@@ -11,10 +11,12 @@ import com.bumptech.glide.Glide
 import fr.paulfgx.githubproject.R
 import fr.paulfgx.githubproject.ui.activity.MainActivity
 import fr.paulfgx.githubproject.ui.adapter.RepoAdapter
+import fr.paulfgx.githubproject.ui.utils.hide
 import fr.paulfgx.githubproject.ui.viewmodel.RepoViewModel
 import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_details.*
 import kotlinx.android.synthetic.main.fragment_user_details.view.*
+import kotlinx.android.synthetic.main.fragment_user_list.*
 
 class UserDetailsFragment : Fragment() {
 
@@ -50,6 +52,16 @@ class UserDetailsFragment : Fragment() {
         }
         label_repositories.visibility = View.INVISIBLE
         loadUser(view)
+
+        // Observe the change on the root layout and hide progress bar
+        // when first items are loaded
+        user_details_root.viewTreeObserver.addOnGlobalLayoutListener {
+            repo_list_recycler_view?.adapter?.itemCount?.run {
+                if (this!! > 0) {
+                    user_detail_progress_bar.hide()
+                }
+            }
+        }
     }
 
     private fun loadUser(view: View) {
