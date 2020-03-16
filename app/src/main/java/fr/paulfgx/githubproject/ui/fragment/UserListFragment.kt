@@ -17,7 +17,9 @@ import fr.paulfgx.githubproject.R
 import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.ui.activity.MainActivity
 import fr.paulfgx.githubproject.ui.adapter.UserAdapter
+import fr.paulfgx.githubproject.ui.utils.dismissKeyboard
 import fr.paulfgx.githubproject.ui.utils.hide
+import fr.paulfgx.githubproject.ui.utils.show
 import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
 import fr.paulfgx.githubproject.ui.widget.holder.ClickType
 import fr.paulfgx.githubproject.ui.widget.holder.OnUserClickListener
@@ -65,6 +67,8 @@ class UserListFragment : Fragment(),
                 return true
             }
             override fun onQueryTextSubmit(query: String): Boolean {
+                searchView.clearFocus()
+                user_list_main_layout.dismissKeyboard()
                 userViewModel.getSearchUsersPagedList(query).observe(this@UserListFragment) {
                     userAdapter.submitList(it)
                 }

@@ -1,11 +1,14 @@
 package fr.paulfgx.githubproject.ui.utils
 
+import android.content.Context
 import android.util.TypedValue
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.paging.PagedListAdapter
 import kotlin.math.roundToInt
 
 /**
+ * Extensions methods
  * Top level functions : Allow access from everywhere without class name prefix
  */
 fun View.dp(number: Number): Int {
@@ -16,9 +19,11 @@ fun View.dp(number: Number): Int {
     ).roundToInt()
 }
 
-/**
- * Extensions methods
- */
 fun View.hide(){
     visibility = View.GONE
+}
+
+fun View.dismissKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
 }
