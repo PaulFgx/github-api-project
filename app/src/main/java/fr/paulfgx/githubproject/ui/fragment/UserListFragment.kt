@@ -19,7 +19,6 @@ import fr.paulfgx.githubproject.ui.activity.MainActivity
 import fr.paulfgx.githubproject.ui.adapter.UserAdapter
 import fr.paulfgx.githubproject.ui.utils.dismissKeyboard
 import fr.paulfgx.githubproject.ui.utils.hide
-import fr.paulfgx.githubproject.ui.utils.show
 import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
 import fr.paulfgx.githubproject.ui.widget.holder.ClickType
 import fr.paulfgx.githubproject.ui.widget.holder.OnUserClickListener
