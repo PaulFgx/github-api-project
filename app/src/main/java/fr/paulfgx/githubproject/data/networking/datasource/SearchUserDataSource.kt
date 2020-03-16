@@ -8,13 +8,15 @@ import fr.paulfgx.githubproject.data.networking.api.UserApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.Period
 
 /**
- * DataSource use for the paginated api ([UserApi.getAllUser])
+ * DataSource use for the paginated api ([UserApi.searchUsers])
  */
-class UserDataSource private constructor(
+class SearchUserDataSource private constructor(
     private val api: UserApi,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val query: String
 ) : PageKeyedDataSource<Int, User>() {
 
     override fun loadInitial(
@@ -23,22 +25,21 @@ class UserDataSource private constructor(
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.getAllUser(FIRST_KEY).run {
-
+                val response = api.searchUsers(query = query, page = FIRST_KEY, perPage = PER_PAGE).run {
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
                     else throw IllegalStateException("Response is not successful : code = ${this.code()}")
                 }
                 if (params.placeholdersEnabled) callback.onResult(
-                    response,
+                    response.items,
                     0,
-                    response.size, // total size not known
+                    calculatePageCount(response.total_count),
                     null,
-                    if (response.isNotEmpty()) response.last().id else null
+                    FIRST_KEY + 1
                 ) else callback.onResult(
-                    response,
+                    response.items,
                     null,
-                    if (response.isNotEmpty()) response.last().id else null
+                    FIRST_KEY + 1
                 )
 
             } catch (e: Exception) {
@@ -50,14 +51,14 @@ class UserDataSource private constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.getAllUser(id = params.key).run {
+                val response = api.searchUsers(query = query, page = params.key, perPage = PER_PAGE).run {
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
                     else throw IllegalStateException("Response is not successful : code = ${this.code()}")
                 }
                 callback.onResult(
-                    response,
-                    if (response.isNotEmpty()) response.last().id else null
+                    response.items,
+                    params.key + 1
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "loadInitial: ", e)
@@ -68,19 +69,23 @@ class UserDataSource private constructor(
     // This method will not be used in this app
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, User>) = Unit
 
+    // Adding the first key (1) because call with page=0 and page=1 returns the same results
+    private fun calculatePageCount(totalItemCount: Int) = (totalItemCount / PER_PAGE) + FIRST_KEY
+
     class Factory(
         private val api: UserApi,
-        private val scope: CoroutineScope
+        private val scope: CoroutineScope,
+        private val query: String
     ) : DataSource.Factory<Int, User>() {
         override fun create(): DataSource<Int, User> =
-            UserDataSource(
-                api, scope
+            SearchUserDataSource(
+                api, scope, query
             )
     }
 
     companion object {
-        private const val TAG: String = "UserDataSource"
-        private const val FIRST_KEY = 0
+        private const val TAG: String = "SearchUserDataSource"
+        private const val FIRST_KEY = 1
+        private const val PER_PAGE = 30
     }
-
 }

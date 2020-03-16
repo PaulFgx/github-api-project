@@ -1,5 +1,6 @@
 package fr.paulfgx.githubproject.data.networking.api
 
+import fr.paulfgx.githubproject.data.model.PaginatedResult
 import fr.paulfgx.githubproject.data.model.User
 import retrofit2.Response
 import retrofit2.http.GET
@@ -18,6 +19,14 @@ interface UserApi {
     // To get only the first page
     @GET(GET_ALL_USER_PATH)
     suspend fun loadListUsers(): Response<List<User>>
+
+    // Search users that match the user input
+    @GET(GET_ALL_USER_PATH)
+    suspend fun searchUsers(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): Response<PaginatedResult<User>>
 
     @GET
     suspend fun getUserDetails(@Url url: String?): Response<User>
