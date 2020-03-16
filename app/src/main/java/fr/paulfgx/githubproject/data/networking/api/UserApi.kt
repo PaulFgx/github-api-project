@@ -21,7 +21,7 @@ interface UserApi {
     suspend fun loadListUsers(): Response<List<User>>
 
     // Search users that match the user input
-    @GET(GET_ALL_USER_PATH)
+    @GET(GET_SEARCH_USERS_PATH)
     suspend fun searchUsers(
         @Query("q") query: String,
         @Query("page") page: Int,
@@ -33,5 +33,6 @@ interface UserApi {
 
     companion object {
         const val GET_ALL_USER_PATH = "users"
+        const val GET_SEARCH_USERS_PATH = "search/users"
     }
 }

@@ -62,15 +62,12 @@ class UserListFragment : Fragment(),
         searchView.setSearchableInfo(manager.getSearchableInfo(activity?.componentName))
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String): Boolean {
-
-                // TODO
-
                 return true
             }
             override fun onQueryTextSubmit(query: String): Boolean {
-
-                // TODO
-
+                userViewModel.getSearchUsersPagedList(query).observe(this@UserListFragment) {
+                    userAdapter.submitList(it)
+                }
                 return true
             }
         })

@@ -9,6 +9,7 @@ import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.data.networking.HttpClientManager
 import fr.paulfgx.githubproject.data.networking.api.UserApi
 import fr.paulfgx.githubproject.data.networking.createApi
+import fr.paulfgx.githubproject.data.networking.datasource.SearchUserDataSource
 import fr.paulfgx.githubproject.data.networking.datasource.UserDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,13 @@ private class UserRepositoryImpl(
     override fun getPaginatedList(scope: CoroutineScope): LiveData<PagedList<User>> {
         return LivePagedListBuilder(
             UserDataSource.Factory(api, scope),
+            paginationConfig
+        ).build()
+    }
+
+    override fun getSearchPaginatedList(scope: CoroutineScope, query: String): LiveData<PagedList<User>> {
+        return  LivePagedListBuilder(
+            SearchUserDataSource.Factory(api, scope, query),
             paginationConfig
         ).build()
     }
@@ -63,9 +71,14 @@ private class UserRepositoryImpl(
 interface UserRepository {
 
     /**
-     * Return a LiveData (Observable Design Pattern) of a Paged List of Character
+     * Return a LiveData (Observable Design Pattern) of a Paged List of User
      */
     fun getPaginatedList(scope: CoroutineScope): LiveData<PagedList<User>>
+
+    /**
+     * Return a LiveData used in the search feature
+     */
+    fun getSearchPaginatedList(scope: CoroutineScope, query: String): LiveData<PagedList<User>>
 
     suspend fun getUserDetails(url: String): User?
 

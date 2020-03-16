@@ -17,12 +17,17 @@ open class UserViewModel(
         get() = _data
 
     /**
-     *  Return the paginated list of character from the API
+     *  Return the paginated list of user from the API
      */
     val usersPagedList = repository.getPaginatedList(viewModelScope)
 
     /**
-     * Call the api to fetch the details of a character from its ID
+     *  Return the paginated list for the search feature
+     */
+    fun getSearchUsersPagedList(query: String) = repository.getSearchPaginatedList(viewModelScope, query)
+
+    /**
+     * Call the api to fetch the details of a user from its ID
      */
     fun getUserWithUrl(url: String, onSuccess: OnSuccess<User>) {
         viewModelScope.launch {
