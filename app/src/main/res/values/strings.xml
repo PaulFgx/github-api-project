@@ -12,5 +12,6 @@
     <string name="non">Non</string>
     <string name="insert_ok">Insertion OK</string>
     <string name="insert_failed">L\'insertion a échouée</string>
-    <string name="search_view_text">Search</string>
+    <string name="search_menu_text">Search</string>
+    <string name="sort_menu_text">Sort</string>
 </resources>

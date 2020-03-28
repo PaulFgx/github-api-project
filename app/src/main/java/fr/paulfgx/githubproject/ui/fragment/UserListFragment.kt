@@ -150,8 +150,4 @@ class UserListFragment : Fragment(),
             }
         }
     }
-
-    private fun hideLoader() {
-        user_list_progress_bar.visibility = View.GONE
-    }
 }
