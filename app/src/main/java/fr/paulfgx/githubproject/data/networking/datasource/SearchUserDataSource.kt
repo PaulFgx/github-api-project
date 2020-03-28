@@ -8,7 +8,6 @@ import fr.paulfgx.githubproject.data.networking.api.UserApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.time.Period
 
 /**
  * DataSource use for the paginated api ([UserApi.searchUsers])
@@ -16,7 +15,8 @@ import java.time.Period
 class SearchUserDataSource private constructor(
     private val api: UserApi,
     private val scope: CoroutineScope,
-    private val query: String
+    private val query: String,
+    private val sort: String
 ) : PageKeyedDataSource<Int, User>() {
 
     override fun loadInitial(
@@ -25,7 +25,7 @@ class SearchUserDataSource private constructor(
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.searchUsers(query = query, page = FIRST_KEY, perPage = PER_PAGE).run {
+                val response = api.searchAndSortUsers(query = query, page = FIRST_KEY, perPage = PER_PAGE, sort = sort).run {
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
                     else throw IllegalStateException("Response is not successful : code = ${this.code()}")
@@ -51,7 +51,7 @@ class SearchUserDataSource private constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.searchUsers(query = query, page = params.key, perPage = PER_PAGE).run {
+                val response = api.searchAndSortUsers(query = query, page = params.key, perPage = PER_PAGE, sort = sort).run {
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
                     else throw IllegalStateException("Response is not successful : code = ${this.code()}")
@@ -75,11 +75,12 @@ class SearchUserDataSource private constructor(
     class Factory(
         private val api: UserApi,
         private val scope: CoroutineScope,
-        private val query: String
+        private val query: String,
+        private val sort: String
     ) : DataSource.Factory<Int, User>() {
         override fun create(): DataSource<Int, User> =
             SearchUserDataSource(
-                api, scope, query
+                api, scope, query, sort
             )
     }
 

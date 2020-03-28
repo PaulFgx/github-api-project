@@ -5,11 +5,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.data.repository.UserRepository
+import fr.paulfgx.githubproject.ui.utils.SortUserType
 import kotlinx.coroutines.launch
 
 open class UserViewModel(
     private val repository: UserRepository
 ) : ViewModel() {
+
+    /**
+     * Store sort filter in UserViewModel, init value to NONE
+     */
+    var currentSortUserType: SortUserType = SortUserType.NONE
 
     private var _data = mutableListOf<Int>()
 
@@ -24,7 +30,7 @@ open class UserViewModel(
     /**
      *  Return the paginated list for the search feature
      */
-    fun getSearchUsersPagedList(query: String) = repository.getSearchPaginatedList(viewModelScope, query)
+    fun getSearchUsersPagedList(query: String) = repository.getSearchPaginatedList(viewModelScope, query, currentSortUserType.apiKeyword)
 
     /**
      * Call the api to fetch the details of a user from its ID

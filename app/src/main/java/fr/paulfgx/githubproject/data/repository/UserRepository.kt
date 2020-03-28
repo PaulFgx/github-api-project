@@ -35,9 +35,9 @@ private class UserRepositoryImpl(
         ).build()
     }
 
-    override fun getSearchPaginatedList(scope: CoroutineScope, query: String): LiveData<PagedList<User>> {
+    override fun getSearchPaginatedList(scope: CoroutineScope, query: String, sort: String): LiveData<PagedList<User>> {
         return  LivePagedListBuilder(
-            SearchUserDataSource.Factory(api, scope, query),
+            SearchUserDataSource.Factory(api, scope, query, sort),
             paginationConfig
         ).build()
     }
@@ -78,7 +78,7 @@ interface UserRepository {
     /**
      * Return a LiveData used in the search feature
      */
-    fun getSearchPaginatedList(scope: CoroutineScope, query: String): LiveData<PagedList<User>>
+    fun getSearchPaginatedList(scope: CoroutineScope, query: String, sort: String): LiveData<PagedList<User>>
 
     suspend fun getUserDetails(url: String): User?
 

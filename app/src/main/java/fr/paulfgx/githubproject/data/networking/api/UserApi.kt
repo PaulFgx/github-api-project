@@ -2,6 +2,7 @@ package fr.paulfgx.githubproject.data.networking.api
 
 import fr.paulfgx.githubproject.data.model.PaginatedResult
 import fr.paulfgx.githubproject.data.model.User
+import fr.paulfgx.githubproject.ui.utils.SortUserType
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -26,6 +27,15 @@ interface UserApi {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
+    ): Response<PaginatedResult<User>>
+
+    // Search users and sort them
+    @GET(GET_SEARCH_USERS_PATH)
+    suspend fun searchAndSortUsers(
+        @Query("q") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+        @Query("sort") sort: String
     ): Response<PaginatedResult<User>>
 
     @GET
