@@ -5,6 +5,8 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
@@ -28,6 +30,10 @@ import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
 class UserListFragment : Fragment(),
     OnUserClickListener {
+
+    private var popupMenu: PopupMenu? = null
+
+    private lateinit var sortImageButton: ImageButton
 
     private lateinit var userViewModel: UserViewModel
     private lateinit var userAdapter: UserAdapter
@@ -54,6 +60,11 @@ class UserListFragment : Fragment(),
 
         inflater.inflate(R.menu.search_menu, menu)
 
+        /**
+         * This view will be used as anchor view by the popupmenu
+         */
+        sortImageButton = menu.findItem(R.id.sort_item).actionView as ImageButton
+
         val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         val searchItem = menu.findItem(R.id.search_item)
@@ -77,9 +88,11 @@ class UserListFragment : Fragment(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.sort_item -> openPopUpMenu()
+        }
 
-        // TODO
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,12 +123,14 @@ class UserListFragment : Fragment(),
         }
     }
 
-    // Implementation of OnUserClickListener
-    override fun invoke(view: View, user: User, type: ClickType) {
-        when (type) {
-            ClickType.NORMAL -> goGoDetailFragment(user)
-            ClickType.LONG -> askForPersistence(user)
-            else -> throw IllegalStateException("This should not have happened")
+    private fun openPopUpMenu() {
+        popupMenu?.let {
+            // execute this block if not null
+            it.show()
+        } ?: run {
+            // execute this block if null
+            popupMenu = PopupMenu(requireContext(), sortImageButton, Gravity.RIGHT and  Gravity.CENTER_VERTICAL)
+            popupMenu!!.show()
         }
     }
 
@@ -148,6 +163,15 @@ class UserListFragment : Fragment(),
             } else {
                 Toast.makeText(this.context, R.string.insert_failed, Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    // Implementation of OnUserClickListener
+    override fun invoke(view: View, user: User, type: ClickType) {
+        when (type) {
+            ClickType.NORMAL -> goGoDetailFragment(user)
+            ClickType.LONG -> askForPersistence(user)
+            else -> throw IllegalStateException("This should not have happened")
         }
     }
 }

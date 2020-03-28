@@ -8,8 +8,9 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always" />
     <item
-        android:id="@+id/filter_item"
+        android:id="@+id/sort_item"
         android:icon="@drawable/ic_sort_black"
         android:title="@string/sort_menu_text"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.ImageButton"/>
 </menu>
