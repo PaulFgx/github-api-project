@@ -1,5 +1,6 @@
 package fr.paulfgx.githubproject.data.networking.api
 
+import fr.paulfgx.githubproject.BuildConfig
 import fr.paulfgx.githubproject.data.model.Repo
 import fr.paulfgx.githubproject.data.model.Repo.*
 import fr.paulfgx.githubproject.data.networking.HttpClientManager
@@ -16,6 +17,7 @@ class RepoApiTest {
 
     private lateinit var instance: HttpClientManager
     private lateinit var api: RepoApi
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
 
     private val mojomboFirstRepo = Repo(
 
@@ -123,7 +125,7 @@ class RepoApiTest {
     fun getReposWithUrl() = runBlocking {
         val repoReference = mojomboFirstRepo
 
-        api.getReposWithUrl("https://api.github.com/users/mojombo/repos").run {
+        api.getReposWithUrl(apiToken, "https://api.github.com/users/mojombo/repos").run {
             assertTrue("Request must be a success", this.isSuccessful)
             val response: List<Repo> =
                 this.body() ?: throw IllegalStateException("Body is null")

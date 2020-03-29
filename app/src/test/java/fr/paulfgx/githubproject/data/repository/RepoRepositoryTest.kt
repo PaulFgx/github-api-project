@@ -1,6 +1,7 @@
 package fr.paulfgx.githubproject.data.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import fr.paulfgx.githubproject.BuildConfig
 import fr.paulfgx.githubproject.data.model.Repo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -22,6 +23,7 @@ class RepoRepositoryTest {
     @kotlinx.coroutines.ObsoleteCoroutinesApi
     private val testDispatcher = newSingleThreadContext("UI context")
     private lateinit var repository: RepoRepository
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
 
     private val mojomboFirstRepo = Repo(
 
@@ -139,7 +141,7 @@ class RepoRepositoryTest {
     fun getReposWithUrl() = runBlocking {
 
         val repoReference = mojomboFirstRepo
-        val value = repository.getReposWithUrl("https://api.github.com/users/mojombo/repos")
+        val value = repository.getReposWithUrl("https://api.github.com/users/mojombo/repos", apiToken)
 
         // test that exclude some fields to avoid unit test crash when remote informations are updated
         assertTrue(

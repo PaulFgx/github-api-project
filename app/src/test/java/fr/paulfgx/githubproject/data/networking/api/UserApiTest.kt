@@ -1,5 +1,6 @@
 package fr.paulfgx.githubproject.data.networking.api
 
+import fr.paulfgx.githubproject.BuildConfig
 import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.data.networking.HttpClientManager
 import fr.paulfgx.githubproject.data.networking.createApi
@@ -15,6 +16,7 @@ class UserApiTest {
 
     private lateinit var instance: HttpClientManager
     private lateinit var api: UserApi
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
 
     private val mojombo = User(
         login = "mojombo",
@@ -115,7 +117,7 @@ class UserApiTest {
         val firstUser = mojombo
         val count = 30
 
-        api.getAllUser(0).apply {
+        api.getAllUser(apiToken, 0).apply {
             assertTrue("Request must be a success", this.isSuccessful)
             val data: List<User> =
                 this.body() ?: throw IllegalStateException("Body is null")
@@ -133,7 +135,7 @@ class UserApiTest {
 
     @Test
     fun getUserDetails() = runBlocking {
-        api.getUserDetails("https://api.github.com/users/defunkt").run {
+        api.getUserDetails(apiToken, "https://api.github.com/users/defunkt").run {
             assertTrue("Request must be a success", this.isSuccessful)
             val data = this.body() ?: throw IllegalStateException("Body is null")
 
