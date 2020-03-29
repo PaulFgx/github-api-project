@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
 class UserListFragment : Fragment(),
     OnUserClickListener {
-    
+
     private lateinit var userViewModel: UserViewModel
     private lateinit var userAdapter: UserAdapter
     private lateinit var searchView: SearchView
@@ -83,10 +83,10 @@ class UserListFragment : Fragment(),
             /**
              * Handling toolbar submenu item click here
              */
-            R.id.creation_date -> userViewModel.currentSortUserType == SortUserType.CREATION_DATE
-            R.id.repositories -> userViewModel.currentSortUserType == SortUserType.NB_REPOS
-            R.id.followers -> userViewModel.currentSortUserType == SortUserType.NB_FOLLOWERS
-            R.id.no_filter -> userViewModel.currentSortUserType == SortUserType.NONE
+            R.id.creation_date -> userViewModel.currentSortUserType = SortUserType.CREATION_DATE
+            R.id.repositories -> userViewModel.currentSortUserType = SortUserType.NB_REPOS
+            R.id.followers -> userViewModel.currentSortUserType = SortUserType.NB_FOLLOWERS
+            R.id.no_filter -> userViewModel.currentSortUserType = SortUserType.NONE
         }
 
         return super.onOptionsItemSelected(item)

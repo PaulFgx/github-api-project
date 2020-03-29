@@ -9,13 +9,9 @@ import fr.paulfgx.githubproject.ui.utils.SortUserType
 import kotlinx.coroutines.launch
 
 open class UserViewModel(
-    private val repository: UserRepository
-) : ViewModel() {
-
-    /**
-     * Store sort filter in UserViewModel, init value to NONE
-     */
+    private val repository: UserRepository,
     var currentSortUserType: SortUserType = SortUserType.NONE
+) : ViewModel() {
 
     private var _data = mutableListOf<Int>()
 
