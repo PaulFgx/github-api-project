@@ -3,6 +3,7 @@ package fr.paulfgx.githubproject.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import fr.paulfgx.githubproject.BuildConfig
 import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.data.repository.UserRepository
 import fr.paulfgx.githubproject.ui.utils.SortUserType
@@ -15,25 +16,27 @@ open class UserViewModel(
 
     private var _data = mutableListOf<Int>()
 
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
+
     val data: List<Int>
         get() = _data
 
     /**
      *  Return the paginated list of user from the API
      */
-    val usersPagedList = repository.getPaginatedList(viewModelScope)
+    val usersPagedList = repository.getPaginatedList(viewModelScope, apiToken)
 
     /**
      *  Return the paginated list for the search feature
      */
-    fun getSearchUsersPagedList(query: String) = repository.getSearchPaginatedList(viewModelScope, query, currentSortUserType.apiKeyword)
+    fun getSearchUsersPagedList(query: String) = repository.getSearchPaginatedList(viewModelScope, query, currentSortUserType.apiKeyword, apiToken)
 
     /**
      * Call the api to fetch the details of a user from its ID
      */
     fun getUserWithUrl(url: String, onSuccess: OnSuccess<User>) {
         viewModelScope.launch {
-            repository.getUserDetails(url)?.run(onSuccess)
+            repository.getUserDetails(url, apiToken)?.run(onSuccess)
         }
     }
 

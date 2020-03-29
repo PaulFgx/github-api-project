@@ -14,7 +14,8 @@ import kotlinx.coroutines.launch
  */
 class UserDataSource private constructor(
     private val api: UserApi,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
+    private val token: String
 ) : PageKeyedDataSource<Int, User>() {
 
     override fun loadInitial(
@@ -23,7 +24,7 @@ class UserDataSource private constructor(
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.getAllUser(FIRST_KEY).run {
+                val response = api.getAllUser(token, FIRST_KEY).run {
 
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
@@ -50,7 +51,7 @@ class UserDataSource private constructor(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         scope.launch(Dispatchers.IO) {
             try {
-                val response = api.getAllUser(id = params.key).run {
+                val response = api.getAllUser(token, params.key).run {
                     if (this.isSuccessful) this.body()
                         ?: throw IllegalStateException("Body is null")
                     else throw IllegalStateException("Response is not successful : code = ${this.code()}")
@@ -70,11 +71,12 @@ class UserDataSource private constructor(
 
     class Factory(
         private val api: UserApi,
-        private val scope: CoroutineScope
+        private val scope: CoroutineScope,
+        private val token: String
     ) : DataSource.Factory<Int, User>() {
         override fun create(): DataSource<Int, User> =
             UserDataSource(
-                api, scope
+                api, scope, token
             )
     }
 

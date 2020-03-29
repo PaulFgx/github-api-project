@@ -11,10 +11,10 @@ private class RepoRepositoryImpl(
     private val api: RepoApi
 ) : RepoRepository {
 
-    override suspend fun getReposWithUrl(url: String): List<Repo>? {
+    override suspend fun getReposWithUrl(url: String, token: String): List<Repo>? {
         return withContext(Dispatchers.IO) {
             try {
-                val response = api.getReposWithUrl(url)
+                val response = api.getReposWithUrl(token, url)
                 check(response.isSuccessful) { "Response is not a success : code = ${response.code()}" }
                 response.body() ?: throw IllegalStateException("Body is null")
             } catch (e: Exception) {
@@ -27,7 +27,7 @@ private class RepoRepositoryImpl(
 
 interface RepoRepository {
 
-    suspend fun getReposWithUrl(url: String) : List<Repo>?
+    suspend fun getReposWithUrl(url: String, token: String) : List<Repo>?
 
     companion object {
         val instance: RepoRepository by lazy {
