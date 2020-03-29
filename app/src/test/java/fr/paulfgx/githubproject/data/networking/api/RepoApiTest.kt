@@ -17,7 +17,7 @@ class RepoApiTest {
 
     private lateinit var instance: HttpClientManager
     private lateinit var api: RepoApi
-    private val apiToken = ""
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
 
     private val mojomboFirstRepo = Repo(
 

@@ -16,7 +16,7 @@ class UserApiTest {
 
     private lateinit var instance: HttpClientManager
     private lateinit var api: UserApi
-    private val apiToken = ""
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
 
     private val mojombo = User(
         login = "mojombo",

@@ -4,10 +4,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 
-// Load keystore
-def keystorePropertiesFile = rootProject.file("keystore.properties");
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+/**
+ * Load KeyStore
+ * Try Catch is used because keystore.properties file is not available on remote
+ */
 
 android {
     compileSdkVersion 29
@@ -18,8 +18,22 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+
+        buildConfigField("String", "GITHUB_API_TOKEN", "\"\"")
+        File file = rootProject.file("keystore.properties")
+        if (file.exists()) {
+            try {
+                def keystorePropertiesFile = rootProject.file("keystore.properties")
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+                buildConfigField("String", "GITHUB_API_TOKEN", keystoreProperties['access_token'])
+            } catch (MissingPropertyException e) {
+                e.printStackTrace()
+            }
+        }
+
         buildConfigField("String", "BASE_URL", "\"https://api.github.com/\"")
-        buildConfigField("String", "GITHUB_API_TOKEN", keystoreProperties['access_token'])
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
