@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -19,6 +18,7 @@ import fr.paulfgx.githubproject.R
 import fr.paulfgx.githubproject.data.model.User
 import fr.paulfgx.githubproject.ui.activity.MainActivity
 import fr.paulfgx.githubproject.ui.adapter.UserAdapter
+import fr.paulfgx.githubproject.ui.utils.SortUserType
 import fr.paulfgx.githubproject.ui.utils.dismissKeyboard
 import fr.paulfgx.githubproject.ui.utils.hide
 import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
@@ -30,14 +30,9 @@ import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
 class UserListFragment : Fragment(),
     OnUserClickListener {
-
-    private var popupMenu: PopupMenu? = null
-
-    private lateinit var sortImageButton: ImageButton
-
+    
     private lateinit var userViewModel: UserViewModel
     private lateinit var userAdapter: UserAdapter
-
     private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,11 +55,6 @@ class UserListFragment : Fragment(),
 
         inflater.inflate(R.menu.search_menu, menu)
 
-        /**
-         * This view will be used as anchor view by the popupmenu
-         */
-        sortImageButton = menu.findItem(R.id.sort_item).actionView as ImageButton
-
         val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         val searchItem = menu.findItem(R.id.search_item)
@@ -76,6 +66,7 @@ class UserListFragment : Fragment(),
             override fun onQueryTextChange(newText: String): Boolean {
                 return true
             }
+
             override fun onQueryTextSubmit(query: String): Boolean {
                 searchView.clearFocus()
                 user_list_main_layout.dismissKeyboard()
@@ -89,7 +80,13 @@ class UserListFragment : Fragment(),
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.sort_item -> openPopUpMenu()
+            /**
+             * Handling toolbar submenu item click here
+             */
+            R.id.creation_date -> userViewModel.currentSortUserType == SortUserType.CREATION_DATE
+            R.id.repositories -> userViewModel.currentSortUserType == SortUserType.NB_REPOS
+            R.id.followers -> userViewModel.currentSortUserType == SortUserType.NB_FOLLOWERS
+            R.id.no_filter -> userViewModel.currentSortUserType == SortUserType.NONE
         }
 
         return super.onOptionsItemSelected(item)
@@ -101,6 +98,7 @@ class UserListFragment : Fragment(),
             this.setTitle(R.string.profils)
             this.setDisplayHomeAsUpEnabled(false)
         }
+
         // We need to inject the OnUserClickListener in the constructor of the adapter
         userAdapter = UserAdapter(this)
         view.user_list_recycler_view.apply {
@@ -123,17 +121,6 @@ class UserListFragment : Fragment(),
         }
     }
 
-    private fun openPopUpMenu() {
-        popupMenu?.let {
-            // execute this block if not null
-            it.show()
-        } ?: run {
-            // execute this block if null
-            popupMenu = PopupMenu(requireContext(), sortImageButton, Gravity.RIGHT and  Gravity.CENTER_VERTICAL)
-            popupMenu!!.show()
-        }
-    }
-
     private fun goGoDetailFragment(user: User) {
         findNavController().navigate(
             R.id.action_user_list_fragment_to_user_details_fragment,
@@ -152,7 +139,7 @@ class UserListFragment : Fragment(),
         builder.setNegativeButton(R.string.non) { _, _ ->
             //
         }
-        var alert = builder.create()
+        val alert = builder.create()
         alert.show()
     }
 
@@ -173,5 +160,13 @@ class UserListFragment : Fragment(),
             ClickType.LONG -> askForPersistence(user)
             else -> throw IllegalStateException("This should not have happened")
         }
+    }
+
+    companion object {
+        const val GROUP_ID = 1;
+        const val CREATION_DATE_ITEM_ID = 1;
+        const val NB_REPOS_ITEM_ID = 2;
+        const val NB_FOLLOWERS_ITEM_ID = 3;
+        const val NONE_ITEM_ID = 4;
     }
 }

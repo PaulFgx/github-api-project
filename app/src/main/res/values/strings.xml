@@ -14,4 +14,7 @@
     <string name="insert_failed">L\'insertion a échouée</string>
     <string name="search_menu_text">Search</string>
     <string name="sort_menu_text">Sort</string>
+    <string name="date_creation">Date de Création</string>
+    <string name="followers">Followers</string>
+    <string name="aucun_filtre">Aucun Filtre</string>
 </resources>

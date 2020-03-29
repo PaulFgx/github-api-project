@@ -6,11 +6,22 @@
         android:icon="@drawable/ic_search_black"
         android:title="@string/search_menu_text"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/sort_item"
         android:icon="@drawable/ic_sort_black"
         android:title="@string/sort_menu_text"
-        app:showAsAction="always"
-        app:actionViewClass="android.widget.ImageButton"/>
+        app:showAsAction="ifRoom">
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/creation_date"
+                android:title="@string/date_creation" />
+            <item android:id="@+id/repositories"
+                android:title="@string/repos" />
+            <item android:id="@+id/followers"
+                android:title="@string/followers" />
+            <item android:id="@+id/no_filter"
+                android:title="@string/aucun_filtre" />
+        </menu>
+    </item>
 </menu>
