@@ -23,7 +23,7 @@ class RepoRepositoryTest {
     @kotlinx.coroutines.ObsoleteCoroutinesApi
     private val testDispatcher = newSingleThreadContext("UI context")
     private lateinit var repository: RepoRepository
-    private val apiToken = BuildConfig.GITHUB_API_TOKEN
+    private val apiToken = ""
 
     private val mojomboFirstRepo = Repo(
 
