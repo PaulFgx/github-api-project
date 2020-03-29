@@ -2,6 +2,8 @@
 # Created by https://www.gitignore.io/api/git,java,kotlin,android,intellij+all,androidstudio
 # Edit at https://www.gitignore.io/?templates=git,java,kotlin,android,intellij+all,androidstudio
 
+keystore.properties
+
 ### Android ###
 # Built application files
 *.apk
