@@ -15,12 +15,17 @@
         <!-- "file" submenu -->
         <menu>
             <item android:id="@+id/creation_date"
-                android:title="@string/date_creation" />
+                android:checkable="true"
+                android:title="@string/filtrer_par_date_creation" />
             <item android:id="@+id/repositories"
-                android:title="@string/repos" />
+                android:checkable="true"
+                android:title="@string/filtrer_par_repositories" />
             <item android:id="@+id/followers"
-                android:title="@string/followers" />
+                android:checkable="true"
+                android:title="@string/filtrer_par_followers" />
             <item android:id="@+id/no_filter"
+                android:checkable="true"
+                android:checked="true"
                 android:title="@string/aucun_filtre" />
         </menu>
     </item>

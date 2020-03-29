@@ -52,16 +52,6 @@ class UserDetailsFragment : Fragment() {
         }
         label_repositories.visibility = View.INVISIBLE
         loadUser(view)
-
-        // Observe the change on the root layout and hide progress bar
-        // when first items are loaded
-        user_details_root.viewTreeObserver.addOnGlobalLayoutListener {
-            repo_list_recycler_view?.adapter?.itemCount?.run {
-                if (this > 0) {
-                    user_detail_progress_bar.hide()
-                }
-            }
-        }
     }
 
     private fun loadUser(view: View) {
@@ -90,7 +80,9 @@ class UserDetailsFragment : Fragment() {
     private fun loadRepos(url: String) {
 
         repoViewModel.getReposWithUrl(url) {
-            label_repositories.visibility = View.VISIBLE
+            user_detail_progress_bar.hide()
+            if (it.isNotEmpty())
+                label_repositories.visibility = View.VISIBLE
             repoAdapter.submitList(it)
         }
     }

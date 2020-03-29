@@ -27,10 +27,10 @@ import fr.paulfgx.githubproject.ui.widget.holder.OnUserClickListener
 import kotlinx.android.synthetic.main.fragment_user_list.*
 import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
-
 class UserListFragment : Fragment(),
     OnUserClickListener {
 
+    private lateinit var toolbarMenu: Menu
     private lateinit var userViewModel: UserViewModel
     private lateinit var userAdapter: UserAdapter
     private lateinit var searchView: SearchView
@@ -39,7 +39,7 @@ class UserListFragment : Fragment(),
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         activity?.run {
-            userViewModel = ViewModelProvider(this, UserViewModel).get()
+            userViewModel = ViewModelProvider(requireActivity(), UserViewModel).get()
         } ?: throw IllegalStateException("Invalid Activity")
     }
 
@@ -54,6 +54,8 @@ class UserListFragment : Fragment(),
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 
         inflater.inflate(R.menu.search_menu, menu)
+
+        this.toolbarMenu = menu
 
         val manager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
@@ -76,6 +78,11 @@ class UserListFragment : Fragment(),
                 return true
             }
         })
+        searchView.setOnCloseListener {
+            // Displays standard list when user closes searchView
+            initSimpleListLiveData()
+            return@setOnCloseListener false
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -83,12 +90,23 @@ class UserListFragment : Fragment(),
             /**
              * Handling toolbar submenu item click here
              */
-            R.id.creation_date -> userViewModel.currentSortUserType = SortUserType.CREATION_DATE
-            R.id.repositories -> userViewModel.currentSortUserType = SortUserType.NB_REPOS
-            R.id.followers -> userViewModel.currentSortUserType = SortUserType.NB_FOLLOWERS
-            R.id.no_filter -> userViewModel.currentSortUserType = SortUserType.NONE
+            R.id.creation_date -> {
+                userViewModel.currentSortUserType = SortUserType.CREATION_DATE
+                handleCheck(item.itemId)
+            }
+            R.id.repositories -> {
+                userViewModel.currentSortUserType = SortUserType.NB_REPOS
+                handleCheck(item.itemId)
+            }
+            R.id.followers -> {
+                userViewModel.currentSortUserType = SortUserType.NB_FOLLOWERS
+                handleCheck(item.itemId)
+            }
+            R.id.no_filter -> {
+                userViewModel.currentSortUserType = SortUserType.NONE
+                handleCheck(item.itemId)
+            }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -99,17 +117,27 @@ class UserListFragment : Fragment(),
             this.setDisplayHomeAsUpEnabled(false)
         }
 
+        createAdapter()
+        initSimpleListLiveData()
+        hideLoaderWhenAdapterIsLoaded()
+    }
+
+    private fun createAdapter() {
         // We need to inject the OnUserClickListener in the constructor of the adapter
         userAdapter = UserAdapter(this)
-        view.user_list_recycler_view.apply {
+        user_list_recycler_view.apply {
             adapter = userAdapter
             if (itemDecorationCount == 0) addItemDecoration(UserAdapter.OffsetDecoration())
         }
+    }
 
-        userViewModel.usersPagedList.observe(this) {
+    private fun initSimpleListLiveData() {
+        userViewModel.usersPagedList.observe(this@UserListFragment) {
             userAdapter.submitList(it)
         }
+    }
 
+    private fun hideLoaderWhenAdapterIsLoaded() {
         // Observe the change on the root layout and hide progress bar
         // when first items are loaded
         user_list_main_layout.viewTreeObserver.addOnGlobalLayoutListener {
@@ -119,6 +147,14 @@ class UserListFragment : Fragment(),
                 }
             }
         }
+    }
+
+    private fun handleCheck(resId: Int) {
+        toolbarMenu.findItem(R.id.creation_date).isChecked = false
+        toolbarMenu.findItem(R.id.repositories).isChecked = false
+        toolbarMenu.findItem(R.id.followers).isChecked = false
+        toolbarMenu.findItem(R.id.no_filter).isChecked = false
+        toolbarMenu.findItem(resId).isChecked = true
     }
 
     private fun goGoDetailFragment(user: User) {
@@ -160,13 +196,5 @@ class UserListFragment : Fragment(),
             ClickType.LONG -> askForPersistence(user)
             else -> throw IllegalStateException("This should not have happened")
         }
-    }
-
-    companion object {
-        const val GROUP_ID = 1;
-        const val CREATION_DATE_ITEM_ID = 1;
-        const val NB_REPOS_ITEM_ID = 2;
-        const val NB_FOLLOWERS_ITEM_ID = 3;
-        const val NONE_ITEM_ID = 4;
     }
 }
