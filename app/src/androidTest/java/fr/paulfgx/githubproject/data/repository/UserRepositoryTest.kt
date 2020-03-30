@@ -3,6 +3,7 @@ package fr.paulfgx.githubproject.data.repository
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
+import fr.paulfgx.githubproject.BuildConfig
 import fr.paulfgx.githubproject.data.database.DatabaseManager
 import fr.paulfgx.githubproject.data.database.GitHubDatabase
 import fr.paulfgx.githubproject.data.model.User
@@ -21,6 +22,7 @@ class UseRepositoryTest {
     val instantTaskExecutor = InstantTaskExecutorRule()
     private val testDispatcher = newSingleThreadContext("UI context")
     private lateinit var repository: UserRepository
+    private val apiToken = BuildConfig.GITHUB_API_TOKEN
 
     private val defunkt = User(
         login = "defunkt",
@@ -70,7 +72,7 @@ class UseRepositoryTest {
 
     @Test
     fun getCharacterDetails() = runBlocking {
-        val data = repository.getUserDetails("https://api.github.com/users/defunkt")
+        val data = repository.getUserDetails("https://api.github.com/users/defunkt", apiToken)
 
         // test that exclude some fields to avoid unit test crash when remote informations are updated
         Assert.assertTrue(ReflectionEquals(defunkt, "public_repos", "public_gists", "followers", "following", "updated_at").matches(data))
@@ -78,7 +80,7 @@ class UseRepositoryTest {
 
     @Test
     fun getPaginatedListTest() = runBlocking {
-        val value = repository.getPaginatedList(this).getBlockingValue(
+        val value = repository.getPaginatedList(this, apiToken).getBlockingValue(
             timeOut = 10
         )
         Assert.assertTrue(

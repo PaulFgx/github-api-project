@@ -16,7 +16,6 @@ import fr.paulfgx.githubproject.ui.viewmodel.RepoViewModel
 import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_user_details.*
 import kotlinx.android.synthetic.main.fragment_user_details.view.*
-import kotlinx.android.synthetic.main.fragment_user_list.*
 
 class UserDetailsFragment : Fragment() {
 

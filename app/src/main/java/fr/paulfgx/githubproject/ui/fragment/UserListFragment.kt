@@ -5,7 +5,6 @@ import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
@@ -25,7 +24,6 @@ import fr.paulfgx.githubproject.ui.viewmodel.UserViewModel
 import fr.paulfgx.githubproject.ui.widget.holder.ClickType
 import fr.paulfgx.githubproject.ui.widget.holder.OnUserClickListener
 import kotlinx.android.synthetic.main.fragment_user_list.*
-import kotlinx.android.synthetic.main.fragment_user_list.view.*
 
 class UserListFragment : Fragment(),
     OnUserClickListener {
@@ -39,7 +37,7 @@ class UserListFragment : Fragment(),
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         activity?.run {
-            userViewModel = ViewModelProvider(requireActivity(), UserViewModel).get()
+            userViewModel = ViewModelProvider(this@UserListFragment, UserViewModel).get()
         } ?: throw IllegalStateException("Invalid Activity")
     }
 
@@ -194,7 +192,8 @@ class UserListFragment : Fragment(),
         when (type) {
             ClickType.NORMAL -> goGoDetailFragment(user)
             ClickType.LONG -> askForPersistence(user)
-            else -> throw IllegalStateException("This should not have happened")
+            // Switch is exhaustive, so no need for else statement
+            // else -> throw IllegalStateException("This should not have happened")
         }
     }
 }
