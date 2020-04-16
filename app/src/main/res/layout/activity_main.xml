@@ -12,9 +12,8 @@
         android:layout_width="match_parent"
         app:navigationIcon="@drawable/ic_arrow_back"
         android:layout_height="?actionBarSize"
-        android:background="@color/color_background"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/color_on_background" />
+        app:titleTextColor="@color/color_on_primary" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_fragment_container"
