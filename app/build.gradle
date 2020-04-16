@@ -149,5 +149,5 @@ dependencies {
     // endregion
 
     // region FireBase
-    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+    implementation "com.google.firebase:firebase-analytics:$firebase_analytics_version"
 }
